@@ -12,6 +12,8 @@ S = wmi.WMI()
 my_system = S.Win32_ComputerSystem()[0]
 
 password = '1012'
+
+
 # Define the window's contents
 layout = [[sg.Text("Get your computer's information, put in your password: ")],
           [sg.Input(key='-INPUT-')],
