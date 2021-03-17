@@ -1,24 +1,49 @@
-import wmi  #windows menagement sistem library
+import PySimpleGUI as sg
+
+sg.theme('DarkAmber') # theme of the window
+
+import wmi  #windows menagement system library
 import platform
+
+# Take information abuot your operating system
+OpSys = platform.system()
 
 S = wmi.WMI()
 my_system = S.Win32_ComputerSystem()[0]
-OpSys = platform.system() #to get information about os type
 
-ch = input("Press zero 0 to see the features of your computer: ") #your choose 
+password = '1012'
+# Define the window's contents
+layout = [[sg.Text("Get your computer's information, put in your password: ")],
+          [sg.Input(key='-INPUT-')],
+          [sg.Button('Ok'), sg.Button('Quit')],
+          [sg.Text(size=(300,1), key='-OUTPUT-')]
+         ]
+
+# Create the window
+window = sg.Window('Get Pc Info', layout, size=(800, 400))
 
 while True:
-    if ch == '0':
-      print("\n/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/")
-      print(f"\tManufactured: {my_system.Manufacturer}")
-      print(f"\tModell: {my_system.Model}")
-      print(f"\tName: {my_system.Name}")
-      print(f"\tOperator System: {OpSys}")
-      print(f"\tSystem Type: {my_system.SystemType}")
-      print(f"\tSystem Family / Computer Type: {my_system.SystemFamily}")
-      print("/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/")
-      break
-    else:
-      ch = input("ERROR, Press zero 0 to see the features of your computer: ") #possibility to re-enter the number if you get the wrong number
+    event, values = window.read()
+    # See if user wants to quit or window was closed
+    if event == sg.WINDOW_CLOSED or event == 'Quit':
+        break
 
-print('Thanks for using this program') #Greetings
+    # If password is correct the window give you your information
+    elif values['-INPUT-'] == password:
+        window['-OUTPUT-'].update('Your info: Deca')
+
+        # pop up your computer information, in a new window
+        sg.popup(
+                 f"\nManufactured: {my_system.Manufacturer}",
+                 f"\nModell: {my_system.Model}",
+                 f"\nName: {my_system.Name}",
+                 f"\nOperator System: {OpSys}",
+                 f"\nSystem Type: {my_system.SystemType}",
+                 f"\nSystem Family / Computer Type: {my_system.SystemFamily}"
+               )
+    # If you put wrong password
+    elif values['-INPUT-'] != password:
+        window['-OUTPUT-'].update('Error: unexpected password, try again!')
+
+# Finish up, it remove window rom the screen
+window.close()
