@@ -11,7 +11,7 @@ OpSys = platform.system()
 S = wmi.WMI()
 my_system = S.Win32_ComputerSystem()[0]
 
-password = '1012'
+password = 'Password'
 
 
 # Define the window's contents
