@@ -1,18 +1,19 @@
 import PySimpleGUI as sg
+import wmi  #windows menagement system library
+import platform, psutil, socket
 
 sg.theme('DarkAmber') # theme of the window
-
-import wmi  #windows menagement system library
-import platform
 
 # Take information abuot your operating system
 OpSys = platform.system()
 
-S = wmi.WMI()
+Ram = str(round(psutil.virtual_memory().total / (1024.0 **3)))+" GB" #take Ram information
+Proc = platform.processor() #take processor information
+Ip = socket.gethostbyname(socket.gethostname()) #take ip address information
+S = wmi.WMI() #take windows management system information
 my_system = S.Win32_ComputerSystem()[0]
 
-password = 'Password'
-
+password = 'password' #Define system password
 
 # Define the window's contents
 layout = [[sg.Text("Get your computer's information, put in your password: ")],
@@ -22,7 +23,7 @@ layout = [[sg.Text("Get your computer's information, put in your password: ")],
          ]
 
 # Create the window
-window = sg.Window('Get Pc Info', layout, size=(800, 400))
+window = sg.Window('Get Pc Info', layout, size=(900, 450))
 
 while True:
     event, values = window.read()
@@ -32,7 +33,7 @@ while True:
 
     # If password is correct the window give you your information
     elif values['-INPUT-'] == password:
-        window['-OUTPUT-'].update('Your info: Deca')
+        window['-OUTPUT-'].update('Your info: Name')
 
         # pop up your computer information, in a new window
         sg.popup(
@@ -41,7 +42,12 @@ while True:
                  f"\nName: {my_system.Name}",
                  f"\nOperator System: {OpSys}",
                  f"\nSystem Type: {my_system.SystemType}",
-                 f"\nSystem Family / Computer Type: {my_system.SystemFamily}"
+                 f"\nSystem Family / Computer Type: {my_system.SystemFamily}",
+                 f"\nRAM (random access memory): {Ram}",
+                 f"\nProcessor: {Proc}"
+                 f"\n\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+",
+                 f"Ip Address: {Ip}",
+                 f"+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+"
                )
     # If you put wrong password
     elif values['-INPUT-'] != password:
