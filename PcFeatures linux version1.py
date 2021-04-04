@@ -19,7 +19,7 @@ password = 'password' #Define system password
 # Define the window's contents
 layout = [[sg.Text("Get your computer's information, put in your password: ")],
           [sg.Input(key='-INPUT-')],
-          [sg.Button('Ok'), sg.Button('Quit')],
+          [sg.Button('Ok'), sg.Button('Quit'), sg.Button('Help')],
           [sg.Text(size=(300,1), key='-OUTPUT-')]
          ]
 
@@ -31,6 +31,17 @@ while True:
     # See if user wants to quit or window was closed
     if event == sg.WINDOW_CLOSED or event == 'Quit':
         break
+
+    elif event == window.read() or event == 'Help':
+        sg.popup(
+            "\n1. Enter your password in the input bar",
+            "\n2. Press Ok to validate your password",
+            "\n3. Check your info and press Ok at the and to close the popup",
+            "\n4. Press Quit to close the program or press red x",
+            "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-",
+            "Autor: Deca-Code",
+            "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-",
+        )
 
     # If password is correct the window give you your information
     elif values['-INPUT-'] == password:
